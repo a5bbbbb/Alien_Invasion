@@ -14,13 +14,32 @@ class Ship:
 
         # Load the ship's image and get its rect.
 
-        self.image = pygame.image.load('.images/ship.bmp')
+        self.image = pygame.image.load('images/fighter.bmp')
 
         self.rect = self.image.get_rect()
 
         # Start each new ship at the bottom of the screen.
 
         self.rect.midbottom = self.screenRect.midbottom
+
+        # Movement flag; start with a ship that's not moving.
+
+        self.movingRight = False
+
+        self.movingLeft = False
+
+
+    def update(self):
+
+        """Update ships position based on the movement flag."""
+
+        if self.movingRight == True:
+
+            self.rect.x += 1
+
+        if self.movingLeft == True:
+
+            self.rect.x -= 1
 
 
     def blitme(self):
