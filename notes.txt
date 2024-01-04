@@ -1,0 +1,6 @@
+It would be a good to manage constant in some other way than just leaving them be as numbers all over the code.
+    here are constant numbers i'm using:
+        alien_invasion.py:
+            framerate: 60(self.clock.tick)
+
+
