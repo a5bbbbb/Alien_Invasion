@@ -65,10 +65,6 @@ class Alien_invasion:
             elif event.type == pygame.KEYDOWN:
                 
                 self._check_keydown_events(event)
-
-                # Try it yourself 12-5 thing.
-
-                print(event.key)
                 
             elif event.type == pygame.KEYUP:
 
