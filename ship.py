@@ -34,15 +34,6 @@ class Ship:
 
         self.moving_left = False
 
-        # Try it yourself 12-4 thing.
-
-        self.moving_up = False
-
-        self.moving_down = False
-
-        self.x, self.y = self.rect.center
-        
-
 
     def update(self):
 
@@ -61,16 +52,6 @@ class Ship:
         # Update rect object from self.x
         
         self.rect.x = self.x
-
-        # Try it yourself 12-4 thing.
-
-        if self.moving_up and self.rect.top > 0:
-            self.y -= self.settings.ship_speed
-
-        if self.moving_down and self.rect.bottom < self.screen_rect.bottom:
-            self.y += self.settings.ship_speed
-
-        self.rect.y = self.y
 
 
     def blitme(self):
