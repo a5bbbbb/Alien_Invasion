@@ -81,13 +81,13 @@ class Alien_invasion:
         
         """Respond to keypresses."""
 
-        if event.key == pygame.K_UP:
+        if event.key == pygame.K_RIGHT:
                     
-            self.ship.moving_up = True
+            self.ship.moving_right = True
         
-        if event.key == pygame.K_DOWN:
+        if event.key == pygame.K_LEFT:
 
-            self.ship.moving_down = True
+            self.ship.moving_left = True
 
         if event.key == pygame.K_q:
 
@@ -101,13 +101,13 @@ class Alien_invasion:
 
         """Respond to key releases."""
 
-        if event.key == pygame.K_UP:
+        if event.key == pygame.K_RIGHT:
 
-            self.ship.moving_up = False
+            self.ship.moving_right = False
         
-        if event.key == pygame.K_DOWN:
+        if event.key == pygame.K_LEFT:
 
-            self.ship.moving_down = False  
+            self.ship.moving_left = False  
 
 
     def _fire_bullet(self):
@@ -133,7 +133,7 @@ class Alien_invasion:
 
         for bullet in self.bullets.copy():
 
-            if bullet.rect.x >= self.screen.get_rect().width:
+            if bullet.rect.bottom <= 0:
                 
                 self.bullets.remove(bullet)
 

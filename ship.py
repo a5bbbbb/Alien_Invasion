@@ -22,17 +22,17 @@ class Ship:
 
         # Start each new ship at the bottom of the screen.
 
-        self.rect.midleft = self.screen_rect.midleft
+        self.rect.midbottom = self.screen_rect.midbottom
 
         # Store a float for the ship's exact horizontal position.
 
-        self.y = float(self.rect.x)
+        self.x = float(self.rect.x)
 
         # Movement flag; start with a ship that's not moving.
 
-        self.moving_up = False
+        self.moving_right = False
 
-        self.moving_down = False
+        self.moving_left = False
 
 
     def update(self):
@@ -41,17 +41,17 @@ class Ship:
 
         # Update the ship's x value, not the rect.
 
-        if self.moving_down and self.rect.bottom < self.screen_rect.bottom:
+        if self.moving_right and self.rect.right < self.screen_rect.right:
 
-            self.y += self.settings.ship_speed
+            self.x += self.settings.ship_speed
 
-        if self.moving_up and self.rect.top > 0:
+        if self.moving_left and self.rect.left > 0:
 
-            self.y -= self.settings.ship_speed
+            self.x -= self.settings.ship_speed
 
         # Update rect object from self.x
         
-        self.rect.y = self.y
+        self.rect.x = self.x
 
 
     def blitme(self):
