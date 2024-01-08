@@ -10,6 +10,10 @@ from bullet import Bullet
 
 from alien import Alien
 
+# Try it yourself 13-1 Stars.
+
+from star import Star
+
 class Alien_invasion:
 
     """Overall class to manage game assets and behavior."""
@@ -41,6 +45,12 @@ class Alien_invasion:
         self.aliens = pygame.sprite.Group()
 
         self._create_fleet()
+
+        # Try it yourself 13-1 Stars.
+
+        self.stars = pygame.sprite.Group()
+
+        self._create_star_grid()
 
 
     def run_game(self):
@@ -189,6 +199,48 @@ class Alien_invasion:
         self.aliens.add(new_alien)
 
 
+    def _create_star_grid(self):
+
+        """Create the grid of stars."""
+
+        # Create a star and keep adding stars until there's no room left.
+
+        # Spacing between stars is two star width and two star height.
+
+        star = Star(self)
+
+        star_width, star_height = star.rect.size
+
+        current_x, current_y = star_width, star_height
+
+        while current_y < (self.settings.screen_height - 8 * star_height):
+
+            while current_x < (self.settings.screen_width - 2 * star_width):
+
+                self._create_star(current_x, current_y)
+
+                current_x += 3 * star_width
+            
+            # Finished a row; reset x value, and increment y value.
+            
+            current_x = star_width
+
+            current_y += 3 * star_height
+    
+    
+    def _create_star(self, x_position, y_position):
+
+        """Create new star and place it in the row."""
+
+        new_star = Star(self)
+
+        new_star.rect.x = x_position
+
+        new_star.rect.y = y_position
+
+        self.stars.add(new_star)
+
+
     def _update_screen(self):
 
         """Update images on the screen, and flip to the new screen."""
@@ -203,7 +255,11 @@ class Alien_invasion:
 
         self.ship.blitme()
 
-        self.aliens.draw(self.screen)
+        # self.aliens.draw(self.screen)
+
+        # Try it yourself 13-1 Stars.
+
+        self.stars.draw(self.screen)
 
         # Make the most recently drawn screen visible.
                 
