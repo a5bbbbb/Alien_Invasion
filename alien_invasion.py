@@ -10,12 +10,6 @@ from bullet import Bullet
 
 from alien import Alien
 
-# Try it yourself 13-2 Stars.
-
-from star import Star
-
-from random import randint
-
 class Alien_invasion:
 
     """Overall class to manage game assets and behavior."""
@@ -48,12 +42,6 @@ class Alien_invasion:
 
         self._create_fleet()
 
-        # Try it yourself 13-2 Stars.
-
-        self.stars = pygame.sprite.Group()
-
-        self._create_star_grid()
-
 
     def run_game(self):
 
@@ -66,6 +54,8 @@ class Alien_invasion:
             self.ship.update()
 
             self._update_bullets()
+
+            self._update_aliens()
 
             self._update_screen()
 
@@ -156,6 +146,38 @@ class Alien_invasion:
                 self.bullets.remove(bullet)
 
     
+    def _update_aliens(self):
+
+        """Check if the fleet is at an edge, then update positions."""
+
+        self._check_fleet_edges()
+
+        self.aliens.update()
+
+    def _check_fleet_edges(self):
+
+        """Respond appropiately if any aliens have reached an edge."""
+
+        for alien in self.aliens.sprites():
+            
+            if alien.check_edges():
+                
+                self._change_fleet_direction()
+
+                break
+    
+
+    def _change_fleet_direction(self):
+
+        """Drop the entire fleet and change the fleet's direction."""
+
+        for alien in self.aliens.sprites():
+
+            alien.rect.y += self.settings.fleet_drop_speed
+        
+        self.settings.fleet_direction *= -1
+
+    
     def _create_fleet(self):
 
         """Create the fleet of aliens."""
@@ -200,53 +222,6 @@ class Alien_invasion:
 
         self.aliens.add(new_alien)
 
-    # Try it yourself 13-2 Stars.
-    def _create_star_grid(self):
-
-        """Create the grid of stars."""
-
-        # Create a star and keep adding stars until there's no room left.
-
-        # Spacing between stars is two star width and two star height.
-
-        star = Star(self)
-
-        star_width, star_height = star.rect.size
-
-        current_x, current_y = star_width, star_height
-
-        while current_y < (self.settings.screen_height - 8 * star_height):
-
-            while current_x < (self.settings.screen_width - 2 * star_width):
-
-                x_shift = randint(-10, 10)
-
-                y_shift = randint(-10, 10)
-
-                self._create_star(current_x + x_shift, 
-                                  current_y + y_shift)
-
-                current_x += 3 * star_width
-            
-            # Finished a row; reset x value, and increment y value.
-            
-            current_x = star_width
-
-            current_y += 3 * star_height
-    
-    # Try it yourself 13-2 Stars.
-    def _create_star(self, x_position, y_position):
-
-        """Create new star and place it in the row."""
-
-        new_star = Star(self)
-
-        new_star.rect.x = x_position
-
-        new_star.rect.y = y_position
-
-        self.stars.add(new_star)
-
 
     def _update_screen(self):
 
@@ -262,11 +237,7 @@ class Alien_invasion:
 
         self.ship.blitme()
 
-        # self.aliens.draw(self.screen)
-
-        # Try it yourself 13-2 Stars.
-
-        self.stars.draw(self.screen)
+        self.aliens.draw(self.screen)
 
         # Make the most recently drawn screen visible.
                 
