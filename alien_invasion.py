@@ -10,9 +10,11 @@ from bullet import Bullet
 
 from alien import Alien
 
-# Try it yourself 13-1 Stars.
+# Try it yourself 13-2 Stars.
 
 from star import Star
+
+from random import randint
 
 class Alien_invasion:
 
@@ -46,7 +48,7 @@ class Alien_invasion:
 
         self._create_fleet()
 
-        # Try it yourself 13-1 Stars.
+        # Try it yourself 13-2 Stars.
 
         self.stars = pygame.sprite.Group()
 
@@ -198,7 +200,7 @@ class Alien_invasion:
 
         self.aliens.add(new_alien)
 
-
+    # Try it yourself 13-2 Stars.
     def _create_star_grid(self):
 
         """Create the grid of stars."""
@@ -217,7 +219,12 @@ class Alien_invasion:
 
             while current_x < (self.settings.screen_width - 2 * star_width):
 
-                self._create_star(current_x, current_y)
+                x_shift = randint(-10, 10)
+
+                y_shift = randint(-10, 10)
+
+                self._create_star(current_x + x_shift, 
+                                  current_y + y_shift)
 
                 current_x += 3 * star_width
             
@@ -227,7 +234,7 @@ class Alien_invasion:
 
             current_y += 3 * star_height
     
-    
+    # Try it yourself 13-2 Stars.
     def _create_star(self, x_position, y_position):
 
         """Create new star and place it in the row."""
@@ -257,7 +264,7 @@ class Alien_invasion:
 
         # self.aliens.draw(self.screen)
 
-        # Try it yourself 13-1 Stars.
+        # Try it yourself 13-2 Stars.
 
         self.stars.draw(self.screen)
 
