@@ -10,7 +10,7 @@ from bullet import Bullet
 
 from alien import Alien
 
-# Try it yourself 13-3 Raindrops.
+# Try it yourself 13-4 Raindrops.
 
 from raindrop import Raindrop
 
@@ -46,7 +46,7 @@ class Alien_invasion:
 
         self._create_fleet()
 
-        # Try it yourself 13-3 Raindrops.
+        # Try it yourself 13-4 Raindrops.
 
         self.rain_grid = pygame.sprite.Group()
 
@@ -67,7 +67,7 @@ class Alien_invasion:
 
             self._update_aliens()
 
-            #self._update_rain()
+            self._update_rain()
 
             self._update_screen()
 
@@ -235,7 +235,7 @@ class Alien_invasion:
         self.aliens.add(new_alien)
 
 
-    # Try it yourself 13-3 Raindrops.
+    # Try it yourself 13-4 Raindrops.
 
     def _update_rain(self):
 
@@ -339,7 +339,7 @@ class Alien_invasion:
 
         # self.aliens.draw(self.screen)
 
-        # Try it yourself 13-3 Raindrops.
+        # Try it yourself 13-4 Raindrops.
 
         for raindrop in self.rain_grid.sprites():
             
