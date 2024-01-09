@@ -10,6 +10,10 @@ from bullet import Bullet
 
 from alien import Alien
 
+# Try it yourself 13-3 Raindrops.
+
+from raindrop import Raindrop
+
 class Alien_invasion:
 
     """Overall class to manage game assets and behavior."""
@@ -42,6 +46,12 @@ class Alien_invasion:
 
         self._create_fleet()
 
+        # Try it yourself 13-3 Raindrops.
+
+        self.rain_grid = pygame.sprite.Group()
+
+        self._create_rain_grid()
+
 
     def run_game(self):
 
@@ -56,6 +66,8 @@ class Alien_invasion:
             self._update_bullets()
 
             self._update_aliens()
+
+            #self._update_rain()
 
             self._update_screen()
 
@@ -223,6 +235,94 @@ class Alien_invasion:
         self.aliens.add(new_alien)
 
 
+    # Try it yourself 13-3 Raindrops.
+
+    def _update_rain(self):
+
+        """Delete raindrops that have disappeared; add new row of raindrops when one at the bottom disappears; update position of the raindrops."""
+
+        self._delete_disappeared_raindrops()
+
+        self._check_top_row()
+
+        self.rain_grid.update()
+
+
+    def _delete_disappeared_raindrops(self):
+
+        """Delete disappeared raindrops."""
+
+        for raindrop in self.rain_grid.copy():
+
+            if raindrop.has_disappeared():
+
+                self.rain_grid.remove(raindrop)
+
+    
+    def _check_top_row(self):
+
+        """Add a new row of raindrops if there is enough room."""
+
+        good = True
+
+        for raindrop in self.rain_grid:
+
+            if raindrop.rect.y < 2 * raindrop.rect.height:
+
+                good = False
+
+                break
+        
+        if good:
+
+            self._add_new_raindrop_row(0)
+
+    
+    def _add_new_raindrop_row(self, y_position):
+
+        """Add a new row of raindrops."""
+
+        raindrop = Raindrop(self)
+
+        raindrop_width = raindrop.rect.width
+
+        current_x = raindrop_width
+
+        while current_x < (self.settings.screen_width - 2 * raindrop_width):
+
+            self._create_raindrop(current_x, y_position)
+
+            current_x += 2 * raindrop_width
+
+
+    def _create_raindrop(self, x_position, y_position):
+
+        """Create new raindrop and place it in the row."""
+
+        new_raindrop = Raindrop(self)
+
+        new_raindrop.rect.x = x_position
+
+        new_raindrop.rect.y = y_position
+
+        self.rain_grid.add(new_raindrop)
+
+
+    def _create_rain_grid(self):
+
+        raindrop = Raindrop(self)
+
+        raindrop_height = raindrop.rect.height
+
+        current_y = 0
+
+        while current_y < (self.settings.screen_height - raindrop_height):
+
+            self._add_new_raindrop_row(current_y)
+
+            current_y += 2 * raindrop_height
+
+
     def _update_screen(self):
 
         """Update images on the screen, and flip to the new screen."""
@@ -237,7 +337,13 @@ class Alien_invasion:
 
         self.ship.blitme()
 
-        self.aliens.draw(self.screen)
+        # self.aliens.draw(self.screen)
+
+        # Try it yourself 13-3 Raindrops.
+
+        for raindrop in self.rain_grid.sprites():
+            
+            raindrop.draw_raindrop()
 
         # Make the most recently drawn screen visible.
                 

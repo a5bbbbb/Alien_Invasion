@@ -40,3 +40,15 @@ class Settings:
 
         self.fleet_direction = 1
 
+        # Try it yourself 13-3 Raindrops.
+
+        self.raindrop_width = 2
+
+        self.raindrop_color = (0, 0, 255)
+
+        self.raindrop_height = 13
+
+        self.rain_drop_speed = 3
+
+
+
