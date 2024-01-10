@@ -8,6 +8,10 @@ class Button:
 
         """Initialize button attributes."""
 
+        # Try it yourself 14-4 Difficulty Levels.
+
+        self.msg = msg
+
         self.screen = ai_game.screen
 
         self.screen_rect = self.screen.get_rect()
@@ -31,6 +35,19 @@ class Button:
         # The button message needs to be prepped only once.
 
         self._prep_msg(msg)
+
+    
+    # Try it yourself 14-4 Difficulty Levels.
+
+    def move_from_center(self, dx, dy):
+
+        """Move the button from the center of the screen."""
+
+        self.rect.x += dx
+
+        self.rect.y += dy
+
+        self._prep_msg(self.msg)
 
     
     def _prep_msg(self, msg):
