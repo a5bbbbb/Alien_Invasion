@@ -118,6 +118,15 @@ class Alien_invasion:
         button_clicked = self.play_button.rect.collidepoint(mouse_pos)
 
         if button_clicked and not self.game_active:
+            
+            # Try it yourself 14-1 Press P to Play.
+
+            self._start_game()
+
+    # Try it yourself 14-1 Press P to Play.
+    def _start_game(self):
+
+        if not self.game_active:
 
             # Reset the game statistics.
 
@@ -159,7 +168,14 @@ class Alien_invasion:
             sys.exit()
 
         if event.key == pygame.K_SPACE:
+
             self._fire_bullet()
+
+        # Try it yourself 14-1 Press P to Play.
+        
+        if event.key == pygame.K_p:
+
+            self._start_game()
             
 
     def _check_keyup_events(self, event):
@@ -232,6 +248,7 @@ class Alien_invasion:
 
         # Look for alien-ship collisions.
         if pygame.sprite.spritecollideany(self.ship, self.aliens):
+            
             self._ship_hit()    
 
         # Look for aliens hitting the bottom of the screen.
