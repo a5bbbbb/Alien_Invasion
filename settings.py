@@ -34,7 +34,7 @@ class Settings:
 
         # Alien settings
 
-        self.alien_speed = 50
+        self.alien_speed = 5
 
         self.fleet_drop_speed = 10
 

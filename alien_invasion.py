@@ -14,6 +14,8 @@ from alien import Alien
 
 from game_stats import GameStats
 
+from button import Button
+
 class Alien_invasion:
 
     """Overall class to manage game assets and behavior."""
@@ -50,7 +52,13 @@ class Alien_invasion:
 
         self._create_fleet()
 
-        self.game_active = True
+        # Start Alien Invasion in an inactive state.
+
+        self.game_active = False
+        
+        # Make play button.
+
+        self.play_button = Button(self, 'Play')
 
 
     def run_game(self):
@@ -88,6 +96,12 @@ class Alien_invasion:
 
                 sys.exit()
 
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+
+                mouse_pos = pygame.mouse.get_pos()
+
+                self._check_play_button(mouse_pos)
+
             elif event.type == pygame.KEYDOWN:
                 
                 self._check_keydown_events(event)
@@ -95,6 +109,37 @@ class Alien_invasion:
             elif event.type == pygame.KEYUP:
 
                 self._check_keyup_events(event)
+
+    
+    def _check_play_button(self, mouse_pos):
+
+        """Start a new game when the player clicks Play."""
+
+        button_clicked = self.play_button.rect.collidepoint(mouse_pos)
+
+        if button_clicked and not self.game_active:
+
+            # Reset the game statistics.
+
+            self.stats.reset_statistics()
+
+            self.game_active = True
+
+            # Get rid of any remaining bullets and aliens.
+
+            self.bullets.empty()
+
+            self.aliens.empty()
+
+            # Create a new fleet and center the ship.
+
+            self._create_fleet()
+
+            self.ship.center_ship()
+            
+            # Hide the mouse cursor
+
+            pygame.mouse.set_visible(False)
 
 
     def _check_keydown_events(self, event):
@@ -248,6 +293,8 @@ class Alien_invasion:
 
             self.game_active = False
 
+            pygame.mouse.set_visible(True)
+
 
     
     def _create_fleet(self):
@@ -325,6 +372,12 @@ class Alien_invasion:
         self.ship.blitme()
 
         self.aliens.draw(self.screen)
+
+        # Draw the play button if the game is inactive.
+
+        if not self.game_active:
+
+            self.play_button.draw_button()
 
         # Make the most recently drawn screen visible.
                 
