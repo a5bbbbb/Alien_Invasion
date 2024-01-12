@@ -20,7 +20,7 @@ class Settings:
 
         # Bullet settings
 
-        self.bullet_width = 3000
+        self.bullet_width = 3
 
         self.bullet_height = 15
 
@@ -51,7 +51,7 @@ class Settings:
 
         self.bullet_speed = 2.5
 
-        self.alien_speed = 100
+        self.alien_speed = 1
 
         # fleet_direction of 1 represents right; -1 represents left.
 
