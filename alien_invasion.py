@@ -16,6 +16,8 @@ from game_stats import GameStats
 
 from button import Button
 
+from scoreboard import Scoreboard
+
 class Alien_invasion:
 
     """Overall class to manage game assets and behavior."""
@@ -44,6 +46,8 @@ class Alien_invasion:
 
         self.stats = GameStats(self)
 
+        self.sb = Scoreboard(self)
+
         self.ship = Ship(self)
 
         self.bullets = pygame.sprite.Group()
@@ -59,18 +63,6 @@ class Alien_invasion:
         # Make play button.
 
         self.play_button = Button(self, 'Play')
-
-        # Try it yourself 14-4 Difficulty Levels.
-
-        self.difficulty_buttons = {'Easy' : Button(self, 'Easy'), 
-                                   'Middle' : Button(self, 'Middle'),
-                                   'Hard' : Button(self, 'Hard')}
-        
-        self.difficulty_buttons['Easy'].move_from_center(0, 10 + self.play_button.height)
-        
-        self.difficulty_buttons['Middle'].move_from_center(0, 2 * ( 10 + self.play_button.height) )
-        
-        self.difficulty_buttons['Hard'].move_from_center(0, 3 * ( 10 + self.play_button.height) )
 
 
     def run_game(self):
@@ -114,8 +106,6 @@ class Alien_invasion:
 
                 self._check_play_button(mouse_pos)
 
-                self._check_difficulty_buttons(mouse_pos)
-
             elif event.type == pygame.KEYDOWN:
                 
                 self._check_keydown_events(event)
@@ -137,11 +127,11 @@ class Alien_invasion:
 
             self.settings.initialize_dynamic_settings()
 
-            self._set_difficulty()
-            
             # Reset the game statistics.
 
-            self.stats.reset_statistics()
+            self.stats.reset_stats()
+
+            self.sb.prep_score()
 
             self.game_active = True
 
@@ -161,61 +151,6 @@ class Alien_invasion:
 
             pygame.mouse.set_visible(False)
 
-    # Try it yourself 14-4 Difficulty Levels.
-
-    def _check_difficulty_buttons(self, mouse_pos):
-
-        """Respond appropriately if any difficulty button was pressed."""
-
-        for difficulty, button in self.difficulty_buttons.items():
-            
-            button_clicked = button.rect.collidepoint(mouse_pos)
-
-            if button_clicked and not self.game_active:
-                
-                self.difficulty = difficulty
-
-                break
-
-
-    def _set_difficulty(self):
-
-        """Set the game difficulty."""
-
-        if self.difficulty == 'Easy':
-            
-            self.settings.ship_speed = 1.5
-
-            self.settings.bullet_speed = 2.5
-
-            self.settings.alien_speed = 1.0
-
-            print('Easy difficulty was set')
-
-        elif self.difficulty == 'Middle':
-            
-            self.settings.ship_speed = 2
-
-            self.settings.bullet_speed = 4
-
-            self.settings.alien_speed = 3
-
-            print('Middle difficulty was set')
-
-        elif self.difficulty == 'Hard':
-            
-            self.settings.ship_speed = 4
-
-            self.settings.bullet_speed = 5
-
-            self.settings.alien_speed = 4
-
-            print('Hard difficulty was set')
-
-        else:
-
-            print("UNIDENTIFIED DIFFICULTY")
-
 
     def _check_keydown_events(self, event):
         
@@ -234,7 +169,6 @@ class Alien_invasion:
             sys.exit()
 
         if event.key == pygame.K_SPACE:
-
             self._fire_bullet()
             
 
@@ -289,6 +223,16 @@ class Alien_invasion:
 
         collisions = pygame.sprite.groupcollide(self.bullets, self.aliens, True, True)
 
+        if collisions:
+
+            for aliens in collisions.values():
+
+                self.stats.score += self.settings.alien_points * len(aliens)
+
+            self.sb.prep_score()
+
+            self.sb.check_high_score()
+
         if not self.aliens:
 
             # Destroy the existing bullets and create new fleet.
@@ -298,6 +242,12 @@ class Alien_invasion:
             self._create_fleet()
 
             self.settings.increase_speed()
+
+            # Increase level.
+
+            self.stats.level += 1
+
+            self.sb.prep_level()
 
     
     def _update_aliens(self):
@@ -310,7 +260,6 @@ class Alien_invasion:
 
         # Look for alien-ship collisions.
         if pygame.sprite.spritecollideany(self.ship, self.aliens):
-
             self._ship_hit()    
 
         # Look for aliens hitting the bottom of the screen.
@@ -452,19 +401,13 @@ class Alien_invasion:
 
         self.aliens.draw(self.screen)
 
+        self.sb.show_score()
+
         # Draw the play button if the game is inactive.
 
         if not self.game_active:
 
             self.play_button.draw_button()
-
-        # Try it yourself 14-4 Difficulty Levels.
-            
-        if not self.game_active:
-
-            for key, button in self.difficulty_buttons.items():
-
-                button.draw_button()
 
         # Make the most recently drawn screen visible.
                 
@@ -481,7 +424,3 @@ if __name__ == '__main__':
     ai = Alien_invasion()
     
     ai.run_game()
-                    
-            
-
-        
